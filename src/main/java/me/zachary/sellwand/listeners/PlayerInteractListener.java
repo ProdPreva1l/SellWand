@@ -7,13 +7,14 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.zachary.sellwand.Sellwand;
 import me.zachary.sellwand.api.events.SellwandHologramEvent;
 import me.zachary.sellwand.api.events.SellwandSellEvent;
-import me.zachary.zachcore.dependencies.com.cryptomorin.xseries.XMaterial;
-import me.zachary.zachcore.dependencies.com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import me.zachary.zachcore.utils.*;
 import me.zachary.zachcore.utils.hooks.EconomyManager;
 import me.zachary.zachcore.utils.hooks.HologramManager;
 import me.zachary.zachcore.utils.hooks.ShopManager;
 import net.bestemor.superhoppers.SuperHoppersAPI;
+import net.bestemor.superhoppers.hopper.ItemHopper;
 import net.bestemor.superhoppers.hopper.SuperHopper;
 import net.bestemor.superhoppers.stored.Stored;
 import org.bukkit.Bukkit;
@@ -129,7 +130,7 @@ public class PlayerInteractListener implements Listener {
 
 			if(hopper == null) return;
 
-			if(!hopper.getType().equals("Item"))
+			if(!(hopper instanceof ItemHopper))
 				return;
 
 			event.setCancelled(true);
@@ -141,7 +142,7 @@ public class PlayerInteractListener implements Listener {
 
 			for (int i = 0; i < hopperStorage.size(); i++) {
 				Stored<?> storedItem = hopperStorage.get(i);
-				ItemStack itemStack = storedItem.asItem(player);
+				ItemStack itemStack = storedItem.asItem();
 				double itemPrice = ShopManager.getSellPrice(player, itemStack, Integer.parseInt(String.valueOf(storedItem.getAmount())));
 				itemPrice = itemPrice * Integer.parseInt(String.valueOf(storedItem.getAmount()));
 				if(itemPrice >= 0D) {
@@ -182,7 +183,7 @@ public class PlayerInteractListener implements Listener {
 				}
 			}
 		}
-		double multiplier = PermissionUtils.getNumberFromPermissionDouble(player, "sellwand.multiplier", false, item.getDouble("Multiplier"));
+		double multiplier = PermissionUtils.getNumberFromPermission(player, "sellwand.multiplier", false, item.getDouble("Multiplier").intValue());
 		amount = amount * multiplier;
 
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {

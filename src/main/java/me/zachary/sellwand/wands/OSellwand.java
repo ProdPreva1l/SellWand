@@ -1,7 +1,7 @@
 package me.zachary.sellwand.wands;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.zachary.zachcore.dependencies.com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
